@@ -12,13 +12,16 @@ RUN mvn -q -DskipTests dependency:go-offline
 COPY src src
 RUN mvn -q -DskipTests package
 
-FROM eclipse-temurin:21-jre
+# Use Alpine JRE 17 — much lighter (~90MB) to fit in Koyeb's 512MB free tier
+FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
 COPY --from=build /app/target/*.jar /app/app.jar
 
-# Render injects PORT dynamically; fall back to 8080 for local use
-ENV PORT=8080
-EXPOSE 8080
+# Hugging Face Spaces uses port 7860 by default; fall back to 8080 for local use
+ENV PORT=7860
+EXPOSE 7860
 
-ENTRYPOINT ["sh", "-c", "java -jar /app/app.jar --server.port=${PORT}"]
+# Limit JVM heap to stay within free tier RAM limits
+ENTRYPOINT ["sh", "-c", "java -Xmx256m -Xms128m -jar /app/app.jar --server.port=${PORT}"]
+
