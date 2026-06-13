@@ -9,6 +9,8 @@ jobs:
   build-apk:
     name: Build Debug APK
     runs-on: ubuntu-latest
+    permissions:
+      contents: write   # required to create GitHub Releases
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true   # opt-in to Node.js 24 actions
 
