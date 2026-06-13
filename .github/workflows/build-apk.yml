@@ -3,7 +3,7 @@ name: Build & Release APK
 on:
   push:
     branches: [ main, master ]
-  workflow_dispatch:       # allow manual trigger from GitHub UI
+  workflow_dispatch:
 
 jobs:
   build-apk:
@@ -11,88 +11,73 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout the repo
+      # 1. Checkout
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Set up Java 17 (matches gradle-daemon-jvm.properties toolchainVersion=17)
-      - name: Set up JDK 17
+      # 2. JDK 21 — AGP 9.x requires JDK 21 minimum
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: '21'
           cache: gradle
 
-      # 3. Diagnostic — print environment info to help debug
-      - name: Print environment info
+      # 3. Override gradle-daemon-jvm.properties to use CI's JDK 21
+      #    (the file specifies toolchainVersion=17 via foojay which blocks AGP 9.x)
+      - name: Force Gradle daemon to use JDK 21
         run: |
-          echo "=== Java version ==="
+          echo "# Overridden by CI — use setup-java JDK 21 instead of foojay JDK 17" \
+            > gradle/gradle-daemon-jvm.properties
+          echo "org.gradle.java.home=$JAVA_HOME" >> gradle.properties
+          echo "✅ Gradle will use JDK at: $JAVA_HOME"
           java -version
-          echo "=== JAVA_HOME ==="
-          echo $JAVA_HOME
-          echo "=== ANDROID_SDK_ROOT ==="
-          echo $ANDROID_SDK_ROOT
-          echo "=== Android SDK platforms ==="
-          ls $ANDROID_SDK_ROOT/platforms/ 2>/dev/null || echo "No platforms folder"
-          echo "=== Build tools ==="
-          ls $ANDROID_SDK_ROOT/build-tools/ 2>/dev/null || echo "No build-tools folder"
-          echo "=== cmdline-tools ==="
-          find $ANDROID_SDK_ROOT/cmdline-tools -name sdkmanager 2>/dev/null || echo "sdkmanager not found"
 
       # 4. Install Android SDK API 36 + build tools (required by AGP 9.1.1)
       - name: Install Android SDK components
         run: |
           SDKMANAGER=$(find $ANDROID_SDK_ROOT/cmdline-tools -name sdkmanager 2>/dev/null | head -1)
-          if [ -z "$SDKMANAGER" ]; then
-            echo "❌ sdkmanager not found at $ANDROID_SDK_ROOT/cmdline-tools"
-            exit 1
-          fi
-          echo "✅ Using sdkmanager: $SDKMANAGER"
+          echo "sdkmanager: $SDKMANAGER"
           echo "y" | $SDKMANAGER --licenses > /dev/null 2>&1 || true
           echo "y" | $SDKMANAGER "platforms;android-36" "build-tools;36.0.0"
-          echo "=== Installed platforms after install ==="
-          ls $ANDROID_SDK_ROOT/platforms/
 
       # 5. Create local.properties pointing to CI Android SDK
       - name: Create local.properties
-        run: |
-          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
-          echo "✅ local.properties created with sdk.dir=$ANDROID_SDK_ROOT"
+        run: echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
 
       # 6. Grant execute permission for gradlew
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      # 7. Update BASE_URL with production backend URL (set BASE_URL secret in repo Settings)
-      - name: Inject BASE_URL into build.gradle
-        run: |
-          if [ -n "${{ secrets.BASE_URL }}" ]; then
-            sed -i 's|buildConfigField "String", "BASE_URL", ".*"|buildConfigField "String", "BASE_URL", "\"${{ secrets.BASE_URL }}\""|g' app/build.gradle
-            echo "✅ BASE_URL set to: ${{ secrets.BASE_URL }}"
-          else
-            echo "⚠️  BASE_URL secret not set — using default URL from build.gradle"
-          fi
-
-      # 8. Build the debug APK — with stacktrace for debugging
+      # 7. Inject BASE_URL via Gradle property (safer than sed — no file corruption)
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --no-daemon --stacktrace
+        run: |
+          BASE_URL_ARG=""
+          if [ -n "${{ secrets.BASE_URL }}" ]; then
+            BASE_URL_ARG="-PBASE_URL=${{ secrets.BASE_URL }}"
+            echo "✅ BASE_URL: ${{ secrets.BASE_URL }}"
+          else
+            echo "⚠️  BASE_URL not set, using default from build.gradle"
+          fi
+          ./gradlew assembleDebug --no-daemon $BASE_URL_ARG
 
-      # 9. Get version name from build.gradle
+      # 8. Get version name
       - name: Get version name
         id: version
         run: |
-          VERSION=$(grep 'versionName' app/build.gradle | head -1 | sed 's/.*versionName[[:space:]]*"\(.*\)"/\1/' | tr -d '[:space:]')
+          VERSION=$(grep 'versionName' app/build.gradle | head -1 \
+            | sed 's/.*versionName[[:space:]]*"\(.*\)"/\1/' | tr -d '[:space:]')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "tag=v$VERSION-$(date +%Y%m%d-%H%M)" >> $GITHUB_OUTPUT
 
-      # 10. Rename APK to something readable
+      # 9. Rename APK
       - name: Rename APK
         run: |
           mkdir -p release
           cp app/build/outputs/apk/debug/app-debug.apk \
              release/AI-Study-Assistant-v${{ steps.version.outputs.version }}.apk
 
-      # 11. Create GitHub Release and upload APK
+      # 10. Publish to GitHub Releases
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
@@ -102,15 +87,11 @@ jobs:
             ## 📱 AI Study Assistant — Debug Build
 
             ### Installation
-            1. Download the APK below
-            2. On your Android phone: **Settings → Security → Allow unknown sources** (or "Install unknown apps")
-            3. Open the downloaded APK and install
+            1. Télécharger l'APK ci-dessous
+            2. Sur Android : **Paramètres → Sécurité → Sources inconnues** → Autoriser
+            3. Ouvrir l'APK et installer
 
-            > ⚠️ This is a debug build (not Play Store signed). Your phone may show a warning — this is normal.
-
-            ### What's new
-            - Built from commit: ${{ github.sha }}
-            - Build date: ${{ github.event.head_commit.timestamp }}
+            > Built from: ${{ github.sha }}
           files: release/*.apk
           draft: false
           prerelease: false
