@@ -1,0 +1,49 @@
+# =============================================================================
+# Render.com - Blueprint configuration
+# Deploy: go to render.com → New → Blueprint → connect your GitHub repo
+# =============================================================================
+
+services:
+  - type: web
+    name: ai-study-assistant-backend
+    runtime: docker
+    rootDir: ai-study-assistant-backend
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      # Database — automatically linked to the Render PostgreSQL database below
+      # DB_URL must be set manually in Render dashboard (Env Vars tab) after first deploy:
+      # Format: jdbc:postgresql://<internal-host>:<port>/aiassistant
+      # You find the internal hostname in the Render database dashboard → "Internal Database URL"
+      - key: DB_URL
+        sync: false        # ← you fill this in Render dashboard after DB is created
+      - key: DB_USERNAME
+        fromDatabase:
+          name: ai-study-assistant-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: ai-study-assistant-db
+          property: password
+
+      # Security — set these in Render dashboard after first deploy
+      - key: JWT_SECRET
+        generateValue: true          # Render auto-generates a secure random value
+      - key: JWT_EXPIRATION_MS
+        value: "86400000"
+
+      # Gemini AI — you MUST set this in Render dashboard (Env Vars tab)
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-flash-latest
+
+      # CORS — allow all origins (fine for free tier / demo)
+      - key: CORS_ALLOWED_ORIGIN_PATTERNS
+        value: "*"
+
+databases:
+  - name: ai-study-assistant-db
+    databaseName: aiassistant
+    user: postgres
+    plan: free

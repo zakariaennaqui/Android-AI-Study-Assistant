@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">StudyFlow</string>
+
+    <!-- Auth -->
+    <string name="login_title">Welcome Back</string>
+    <string name="login_subtitle">Sign in to continue where you left off</string>
+    <string name="register_title">Create Account</string>
+    <string name="register_subtitle">Join and start studying smarter</string>
+    <string name="hint_username">Username</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="btn_login">Sign In</string>
+    <string name="btn_register">Create Account</string>
+    <string name="link_to_register">Don\'t have an account? <b>Sign Up</b></string>
+    <string name="link_to_login">Already have an account? <b>Sign In</b></string>
+
+    <!-- Bottom Nav -->
+    <string name="nav_home">Home</string>
+    <string name="nav_generate">Generate</string>
+    <string name="nav_history">History</string>
+    <string name="nav_review">Review</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Review tab (in-app lists only — no push notifications) -->
+    <string name="review_intro">Quizzes that score at most half of the questions stay in the first list until you do better. Summaries you mark for later appear below.</string>
+    <string name="review_section_quizzes">Quizzes to redo</string>
+    <string name="review_section_summaries">Summaries for later</string>
+    <string name="review_quiz_empty">Nothing here yet. When you finish a quiz at or below half correct, it appears here until you score above half.</string>
+    <string name="review_summary_empty">Nothing here yet. Open a summary and use Review later to save it to this list.</string>
+    <string name="review_quiz_subtitle_format">Last score %1$d of %2$d — retake until more than half are correct</string>
+    <string name="review_tap_to_retake">Tap to open and retake</string>
+    <string name="review_summary_row_hint">Tap to open</string>
+    <string name="review_remove">Remove</string>
+    <string name="review_untitled">Untitled</string>
+    <string name="summary_review_later">Review later</string>
+    <string name="summary_remove_from_review">Remove from review list</string>
+    <string name="quiz_tracked_review_extra">This quiz is on the Review tab until you score above half.</string>
+
+    <!-- Profile -->
+    <string name="profile_title">Profile</string>
+    <string name="profile_appearance">Appearance</string>
+    <string name="profile_theme_system">System</string>
+    <string name="profile_theme_light">Light</string>
+    <string name="profile_theme_dark">Dark</string>
+    <string name="profile_sign_out">Sign Out</string>
+    <string name="profile_account">Account</string>
+    <string name="profile_edit_card">Edit profile</string>
+    <string name="profile_edit_title">Edit profile</string>
+    <string name="profile_edit_subtitle">Update your display name, email, or password.</string>
+    <string name="profile_edit_back">Back</string>
+    <string name="profile_security_section">Email and password</string>
+    <string name="profile_security_hint">Your current password is required when you change your email or set a new password.</string>
+    <string name="hint_current_password">Current password</string>
+    <string name="hint_new_password">New password (min 8 characters)</string>
+    <string name="hint_confirm_password">Confirm new password</string>
+    <string name="btn_save_changes">Save changes</string>
+
+    <!-- Home -->
+    <string name="home_greeting">Hello, %1$s</string>
+    <string name="home_subtitle">Pick a tool and start learning</string>
+    <string name="home_recent">Recent Sessions</string>
+    <string name="home_see_all">View all</string>
+    <string name="home_card_summary_title">Summary</string>
+    <string name="home_card_summary_desc">Turn long content into key takeaways</string>
+    <string name="home_card_quiz_title">Quiz</string>
+    <string name="home_card_quiz_desc">Auto generated questions from your material</string>
+    <string name="home_card_flashcards_title">Flashcards</string>
+    <string name="home_card_flashcards_desc">Swipeable Q and A cards for quick review</string>
+
+    <!-- Generate -->
+    <string name="generate_title">Generate</string>
+    <string name="generate_subtitle">From a few lines of notes or a photo of a page.</string>
+    <string name="generate_section_source">Your material</string>
+    <string name="generate_tab_text">Type Text</string>
+    <string name="generate_tab_image">Scan Image</string>
+    <string name="hint_text_input">Paste or type your study material here</string>
+    <string name="hint_subject">Subject (optional, e.g. Biology)</string>
+    <string name="label_subject">Subject</string>
+    <string name="label_type">What do you want to generate?</string>
+    <string name="label_summary_depth">Summary style</string>
+    <string name="summary_depth_essentials">Quick take</string>
+    <string name="summary_depth_balanced">Standard</string>
+    <string name="summary_depth_thorough">In depth</string>
+    <string name="label_quiz_question_count">Number of questions</string>
+    <string name="quiz_count_value_format">%1$d questions</string>
+    <string name="result_followup_title">Create more from this material</string>
+    <string name="result_followup_summary">Summary</string>
+    <string name="result_followup_quiz">Quiz</string>
+    <string name="result_followup_flashcards">Flashcards</string>
+    <string name="chip_summary">Summary</string>
+    <string name="chip_quiz">Quiz</string>
+    <string name="chip_flashcards">Flashcards</string>
+    <string name="btn_generate">Generate</string>
+    <string name="btn_camera">Take Photo</string>
+    <string name="btn_gallery">Choose Image</string>
+    <string name="ocr_scanning">Reading text from image...</string>
+    <string name="generating">Working on it...</string>
+
+    <!-- Result -->
+    <string name="result_title">Result</string>
+    <string name="result_share">Share</string>
+    <string name="result_save">Saved</string>
+
+    <!-- Quiz -->
+    <string name="quiz_question_counter">Question %1$d of %2$d</string>
+    <string name="quiz_score_title">Quiz Complete</string>
+    <string name="quiz_score_message">You scored %1$d out of %2$d</string>
+    <string name="quiz_btn_finish">Finish Quiz</string>
+    <string name="quiz_btn_next">Next</string>
+
+    <!-- Flashcards -->
+    <string name="flashcard_counter">%1$d / %2$d</string>
+    <string name="flashcard_tap_hint">Tap to flip</string>
+    <string name="flashcard_front">Question</string>
+    <string name="flashcard_back">Answer</string>
+
+    <!-- History -->
+    <string name="history_empty">No sessions yet.\nGenerate something to get started.</string>
+    <string name="history_delete_confirm">Delete this session?</string>
+    <string name="btn_delete">Delete</string>
+    <string name="btn_cancel">Cancel</string>
+
+    <!-- Errors -->
+    <string name="error_network">Network error. Check your connection.</string>
+    <string name="error_server">Server error. Please try again.</string>
+    <string name="error_invalid_credentials">Invalid email or password.</string>
+    <string name="error_email_taken">This email is already registered.</string>
+    <string name="error_text_too_short">Please enter at least 20 characters of text.</string>
+    <string name="error_text_too_long">Text is too long (max 20,000 characters).</string>
+    <string name="error_ocr_failed">Could not extract text from this image.</string>
+    <string name="error_select_type">Please select a generation type.</string>
+    <string name="error_profile_no_changes">Nothing changed. Update your name, email, or password to save.</string>
+    <string name="error_username_required">Username is required.</string>
+    <string name="error_email_required">Email is required.</string>
+    <string name="error_email_invalid">Enter a valid email.</string>
+    <string name="error_current_password_required">Enter your current password to change email or password.</string>
+    <string name="error_current_password_wrong">Current password is incorrect.</string>
+    <string name="error_password_mismatch">New passwords do not match.</string>
+    <string name="error_new_password_length">New password must be at least 8 characters.</string>
+</resources>

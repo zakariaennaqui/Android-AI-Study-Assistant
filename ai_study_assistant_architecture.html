@@ -1,0 +1,176 @@
+
+<style>
+* { box-sizing: border-box; }
+.arch { padding: 8px 0 16px; font-family: var(--font-sans); }
+.layer-box { border-radius: 12px; padding: 11px 13px; border: 0.5px solid; margin-bottom: 4px; }
+.layer-title { font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px; }
+.cards { display: flex; gap: 7px; }
+.card { flex: 1; border-radius: 8px; padding: 7px 10px; border: 0.5px solid; cursor: pointer; transition: filter .15s; }
+.card:hover { filter: brightness(.93); }
+.card-name { font-size: 12px; font-weight: 500; }
+.card-sub { font-size: 10px; margin-top: 2px; opacity: .78; }
+
+.views-layer { background: #EEEDFE; border-color: #AFA9EC; }
+.views-layer .layer-title { color: #3C3489; }
+.views-layer .card { background: #E3E2FD; border-color: #7F77DD; }
+.views-layer .card-name { color: #26215C; }
+.views-layer .card-sub { color: #3C3489; }
+
+.vm-layer { background: #E1F5EE; border-color: #5DCAA5; }
+.vm-layer .layer-title { color: #085041; }
+.vm-layer .card { background: #C5EDD9; border-color: #1D9E75; }
+.vm-layer .card-name { color: #04342C; }
+.vm-layer .card-sub { color: #085041; }
+
+.svc-layer { background: #FAEEDA; border-color: #FAC775; }
+.svc-layer .layer-title { color: #633806; }
+.svc-layer .card { background: #F5D9A0; border-color: #EF9F27; }
+.svc-layer .card-name { color: #412402; }
+.svc-layer .card-sub { color: #633806; }
+
+.data-layer { background: #E6F1FB; border-color: #85B7EB; }
+.data-layer .layer-title { color: #0C447C; }
+.data-layer .card { background: #CADFFA; border-color: #378ADD; }
+.data-layer .card-name { color: #042C53; }
+.data-layer .card-sub { color: #0C447C; }
+
+@media (prefers-color-scheme: dark) {
+  .views-layer { background: #26215C; border-color: #534AB7; }
+  .views-layer .layer-title { color: #CECBF6; }
+  .views-layer .card { background: #3C3489; border-color: #7F77DD; }
+  .views-layer .card-name { color: #EEEDFE; }
+  .views-layer .card-sub { color: #CECBF6; }
+
+  .vm-layer { background: #04342C; border-color: #0F6E56; }
+  .vm-layer .layer-title { color: #9FE1CB; }
+  .vm-layer .card { background: #085041; border-color: #1D9E75; }
+  .vm-layer .card-name { color: #E1F5EE; }
+  .vm-layer .card-sub { color: #9FE1CB; }
+
+  .svc-layer { background: #412402; border-color: #854F0B; }
+  .svc-layer .layer-title { color: #FAC775; }
+  .svc-layer .card { background: #633806; border-color: #BA7517; }
+  .svc-layer .card-name { color: #FAEEDA; }
+  .svc-layer .card-sub { color: #FAC775; }
+
+  .data-layer { background: #042C53; border-color: #185FA5; }
+  .data-layer .layer-title { color: #B5D4F4; }
+  .data-layer .card { background: #0C447C; border-color: #378ADD; }
+  .data-layer .card-name { color: #E6F1FB; }
+  .data-layer .card-sub { color: #B5D4F4; }
+}
+
+.divider { text-align: center; font-size: 13px; color: var(--color-text-tertiary); margin: 2px 0; line-height: 1; }
+
+.models-section { margin-top: 12px; padding-top: 11px; border-top: 0.5px solid var(--color-border-tertiary); }
+.models-title { font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-secondary); margin-bottom: 7px; }
+.models-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.model-tag { border-radius: 6px; padding: 3px 10px; font-size: 11px; font-weight: 500; background: var(--color-background-secondary); color: var(--color-text-secondary); border: 0.5px solid var(--color-border-secondary); }
+</style>
+
+<div class="arch">
+
+  <div class="layer-box views-layer">
+    <div class="layer-title">Views / Screens</div>
+    <div class="cards">
+      <div class="card" onclick="sendPrompt('Explain the Auth screen in detail for the AI Study Assistant app')">
+        <div class="card-name">Auth</div>
+        <div class="card-sub">Login · signup</div>
+      </div>
+      <div class="card" onclick="sendPrompt('Explain the Home dashboard screen in detail')">
+        <div class="card-name">Home</div>
+        <div class="card-sub">Dashboard</div>
+      </div>
+      <div class="card" onclick="sendPrompt('Explain the Capture screen in detail — camera, text input, image upload')">
+        <div class="card-name">Capture</div>
+        <div class="card-sub">Scan · type · upload</div>
+      </div>
+      <div class="card" onclick="sendPrompt('Explain the Result screen in detail — summary, quiz, flashcards tabs')">
+        <div class="card-name">Result</div>
+        <div class="card-sub">Summary · quiz · cards</div>
+      </div>
+      <div class="card" onclick="sendPrompt('Explain the History screen in detail — old quizzes and flashcards')">
+        <div class="card-name">History</div>
+        <div class="card-sub">Old quizzes · cards</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider">↓</div>
+
+  <div class="layer-box vm-layer">
+    <div class="layer-title">ViewModels — MVVM pattern</div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-name">AuthViewModel</div>
+        <div class="card-sub">Login state · user session</div>
+      </div>
+      <div class="card">
+        <div class="card-name">CaptureViewModel</div>
+        <div class="card-sub">Input handling · OCR trigger</div>
+      </div>
+      <div class="card">
+        <div class="card-name">ResultViewModel</div>
+        <div class="card-sub">AI output · save actions</div>
+      </div>
+      <div class="card">
+        <div class="card-name">HistoryViewModel</div>
+        <div class="card-sub">Fetch · filter saved items</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider">↓</div>
+
+  <div class="layer-box svc-layer">
+    <div class="layer-title">Services</div>
+    <div class="cards">
+      <div class="card" onclick="sendPrompt('How does the AuthService work with Firebase Auth in this Android app?')">
+        <div class="card-name">AuthService</div>
+        <div class="card-sub">Firebase Auth</div>
+      </div>
+      <div class="card" onclick="sendPrompt('How does the OCRService work with ML Kit in this Android app?')">
+        <div class="card-name">OCRService</div>
+        <div class="card-sub">ML Kit · text recognition</div>
+      </div>
+      <div class="card" onclick="sendPrompt('How does the GeminiService work — what prompts does it send?')">
+        <div class="card-name">GeminiService</div>
+        <div class="card-sub">Gemini API · generate output</div>
+      </div>
+      <div class="card" onclick="sendPrompt('How does the StorageService work — saving and retrieving quizzes and flashcards?')">
+        <div class="card-name">StorageService</div>
+        <div class="card-sub">Save · fetch · delete</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider">↓</div>
+
+  <div class="layer-box data-layer">
+    <div class="layer-title">Data layer</div>
+    <div class="cards">
+      <div class="card" onclick="sendPrompt('What tables should the Room Database have for the AI Study Assistant app?')">
+        <div class="card-name">Room Database</div>
+        <div class="card-sub">Local — quizzes, flashcards, summaries</div>
+      </div>
+      <div class="card" onclick="sendPrompt('How is Firebase used in the AI Study Assistant app?')">
+        <div class="card-name">Firebase</div>
+        <div class="card-sub">Auth · user profile</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="models-section">
+    <div class="models-title">Data models</div>
+    <div class="models-row">
+      <span class="model-tag">User</span>
+      <span class="model-tag">Note</span>
+      <span class="model-tag">Summary</span>
+      <span class="model-tag">Quiz</span>
+      <span class="model-tag">Question</span>
+      <span class="model-tag">Flashcard</span>
+      <span class="model-tag">StudySession</span>
+    </div>
+  </div>
+
+</div>

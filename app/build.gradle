@@ -1,0 +1,103 @@
+plugins {
+    alias(libs.plugins.android.application)
+}
+
+android {
+    namespace 'com.example.ai_study_assistant_android'
+    compileSdk {
+        version = release(36) {
+            minorApiLevel = 1
+        }
+    }
+
+    defaultConfig {
+        applicationId "com.example.ai_study_assistant_android"
+        minSdk 24
+        targetSdk 36
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+//        buildConfigField "String", "BASE_URL", "\"http://10.0.2.2:8080/\""
+        buildConfigField "String", "BASE_URL", "\"http://192.168.11.103:8080/\""
+    }
+
+    buildFeatures {
+        buildConfig true
+        viewBinding true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+}
+
+// Repo root = parent of this Android project (same folder as ai-study-assistant-backend).
+// Copies login_image.jpg → app/src/main/res/drawable-nodpi/login_hero.jpg for @drawable/login_hero.
+// Also checks android project folder. If none exist, writes a tiny valid JPEG so the resource never goes missing.
+def loginImageRepo = file("${rootProject.projectDir}/../login_image.jpg")
+def loginImageInAndroidRoot = file("${rootProject.projectDir}/login_image.jpg")
+def loginHeroOutDir = file("${projectDir}/src/main/res/drawable-nodpi")
+def loginHeroOutFile = file("${loginHeroOutDir}/login_hero.jpg")
+
+// Smallest valid JPEG (1×1), so builds never break if the real file is missing.
+def minimalJpegHex = "FFD8FFDB004300030202020302020203030303040604040404080606050609080A0A090809090A0C0F0C0A0B0E0B09090D110D0E0F101011100A0C12131210130F101010FFC9000B080001000101011100FFCC000600101005FFDA0008010100003F00D2CF20FFD9"
+
+tasks.register('syncLoginHeroImage') {
+    doLast {
+        loginHeroOutDir.mkdirs()
+        def src = loginImageRepo.exists() ? loginImageRepo : (loginImageInAndroidRoot.exists() ? loginImageInAndroidRoot : null)
+        if (src != null) {
+            loginHeroOutFile.bytes = src.bytes
+            logger.lifecycle("syncLoginHeroImage: copied ${src.name} → ${loginHeroOutFile.name}")
+        } else if (!loginHeroOutFile.exists() || loginHeroOutFile.length() == 0L) {
+            def bytes = minimalJpegHex.collate(2).collect { (byte) Integer.parseInt(it, 16) }
+            loginHeroOutFile.bytes = bytes as byte[]
+            logger.lifecycle("syncLoginHeroImage: wrote minimal placeholder JPEG (add login_image.jpg at repo root to replace)")
+        }
+    }
+}
+
+preBuild.dependsOn('syncLoginHeroImage')
+
+dependencies {
+    // AndroidX Core
+    implementation libs.appcompat
+    implementation libs.material
+    implementation libs.activity
+    implementation libs.constraintlayout
+    implementation libs.cardview
+    implementation libs.recyclerview
+    implementation libs.swiperefreshlayout
+    implementation libs.viewpager2
+    implementation libs.fragment
+
+    // Navigation
+    implementation libs.navigation.fragment
+    implementation libs.navigation.ui
+
+    // Lifecycle
+    implementation libs.lifecycle.viewmodel
+    implementation libs.lifecycle.livedata
+
+    // Retrofit + OkHttp
+    implementation libs.retrofit
+    implementation libs.retrofit.gson
+    implementation libs.okhttp.logging
+    implementation libs.gson
+
+    // ML Kit OCR
+    implementation libs.mlkit.text.recognition
+
+    // Testing
+    testImplementation libs.junit
+    androidTestImplementation libs.ext.junit
+    androidTestImplementation libs.espresso.core
+}

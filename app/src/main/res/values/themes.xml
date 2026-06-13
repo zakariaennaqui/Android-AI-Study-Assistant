@@ -1,0 +1,83 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Base.Theme.AiStudyAssistant" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryVariant">@color/color_primary_dark</item>
+        <item name="colorSecondary">@color/color_secondary</item>
+        <item name="colorSurface">@color/color_surface</item>
+        <item name="colorError">@color/color_error</item>
+        <item name="android:colorBackground">@color/color_background</item>
+        <item name="android:textColorPrimary">@color/color_on_background</item>
+        <item name="android:textColorSecondary">@color/color_on_surface_muted</item>
+        <item name="android:statusBarColor">@color/color_background</item>
+        <item name="android:navigationBarColor">@color/color_surface</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
+    </style>
+
+    <style name="Theme.AiStudyAssistant" parent="Base.Theme.AiStudyAssistant" />
+
+    <style name="Theme.Ai_study_assistant_android" parent="Theme.AiStudyAssistant" />
+
+    <!-- Primary button -->
+    <style name="Widget.App.Button.Primary" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/color_primary</item>
+        <item name="android:textColor">@color/color_on_primary</item>
+        <item name="cornerRadius">12dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:letterSpacing">0.01</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <!-- Outlined button -->
+    <style name="Widget.App.Button.Secondary" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="strokeColor">@color/color_stroke</item>
+        <item name="android:textColor">@color/color_on_background</item>
+        <item name="cornerRadius">12dp</item>
+    </style>
+
+    <!-- Cards -->
+    <style name="Widget.App.Card" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">@color/color_card</item>
+        <item name="cardCornerRadius">14dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeColor">@color/color_stroke</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+    <style name="Widget.App.Card.Feature" parent="Widget.App.Card">
+        <item name="cardCornerRadius">16dp</item>
+    </style>
+
+    <!-- Text fields -->
+    <style name="Widget.App.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/color_stroke</item>
+        <item name="boxBackgroundColor">@color/color_card</item>
+        <item name="hintTextColor">@color/color_on_surface_muted</item>
+        <item name="android:textColorHint">@color/color_on_surface_muted</item>
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+    </style>
+
+    <!-- Bottom Navigation -->
+    <style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="backgroundTint">@color/color_surface</item>
+        <item name="itemIconTint">@color/nav_item_color</item>
+        <item name="itemTextColor">@color/nav_item_color</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <!-- Badge chip -->
+    <style name="Widget.App.TypeBadge" parent="">
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/color_on_primary</item>
+    </style>
+
+</resources>

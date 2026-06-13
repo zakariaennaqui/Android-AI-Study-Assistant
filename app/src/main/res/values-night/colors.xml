@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Monochrome (dark): white on black, ChatGPT-style -->
+    <color name="color_primary">#FFFFFF</color>
+    <color name="color_primary_dark">#E5E5E5</color>
+    <color name="color_primary_variant">#FFFFFF</color>
+    <color name="color_primary_soft">#1FFFFFFF</color>
+    <color name="color_secondary">#FFFFFF</color>
+    <color name="color_secondary_variant">#E5E5E5</color>
+    <color name="color_secondary_soft">#1FFFFFFF</color>
+    <color name="color_accent">#FFFFFF</color>
+    <color name="color_accent_soft">#1FFFFFFF</color>
+
+    <color name="color_background">#000000</color>
+    <color name="color_surface">#0D0D0D</color>
+    <color name="color_card">#171717</color>
+    <color name="color_card_elevated">#212121</color>
+
+    <color name="color_on_background">#FFFFFF</color>
+    <color name="color_on_surface">#ECECEC</color>
+    <color name="color_on_surface_muted">#9B9B9B</color>
+    <color name="color_on_primary">#000000</color>
+
+    <color name="color_error">#FFFFFF</color>
+    <color name="color_error_soft">#1FFFFFFF</color>
+    <color name="color_success">#FFFFFF</color>
+    <color name="color_warning">#FFFFFF</color>
+
+    <!-- Quiz feedback: soft green / soft red on dark -->
+    <color name="color_correct">#A5D6A7</color>
+    <color name="color_correct_bg">#1E3A28</color>
+    <color name="color_wrong">#FFCDD2</color>
+    <color name="color_wrong_bg">#3D2424</color>
+
+    <color name="color_stroke">#333333</color>
+    <color name="color_divider">#333333</color>
+
+    <color name="color_badge_summary">#9B9B9B</color>
+    <color name="color_badge_summary_bg">#2A2A2A</color>
+    <color name="color_badge_quiz">#9B9B9B</color>
+    <color name="color_badge_quiz_bg">#2A2A2A</color>
+    <color name="color_badge_flashcards">#9B9B9B</color>
+    <color name="color_badge_flashcards_bg">#2A2A2A</color>
+
+    <color name="color_gradient_start">#1FFFFFFF</color>
+    <color name="color_gradient_end">#00000000</color>
+    <color name="color_shimmer">#1FFFFFFF</color>
+</resources>

@@ -1,0 +1,550 @@
+
+--- SLIDE 1 ---
+Université Hassan 1er
+École Nationale des Sciences Appliquées – Berrechid
+Filière : Génie Informatique  |  Module : Développement Mobile  |  Semestre S8
+AI Study Assistant
+Application mobile intelligente d'aide à l'apprentissage
+Réalisé
+ par : 
+Mjahdi
+ Abdel
+ou
+ahab
+  &  Zakaria 
+Ennaqui
+Encadrant : Prof. Abdsamad Jarrar
+Année universitaire : 2025 / 2026
+AI Study Assistant  |  ENSA Berrechid  |  2025 / 2026
+
+--- SLIDE 2 ---
+Sommaire
+AI Study Assistant  |  ENSA Berrechid  |  2025/2026
+00
+Plan de la présentation
+01
+Contexte et problématique
+02
+Objectifs du projet
+03
+Architecture générale
+04
+Technologies utilisées
+05
+Authentification & sécurité
+06
+Module de génération IA
+07
+Intégration de l'IA – Google Gemini
+08
+Quiz interactif
+09
+Résumés, Flashcards & Historique
+10
+Interface 
+utilisateur
+11
+Base de données & API REST
+1
+3
+Conclusion & perspectives
+12
+Démonstration
+
+--- SLIDE 3 ---
+Contexte & Problématique
+AI Study Assistant  |  ENSA Berrechid  |  2025/2026
+01
+Contexte & Problématique
+Pourquoi un assistant d'étude intelligent ?
+Contexte
+•  La charge académique des étudiants en ingénierie est croissante.
+•  Les outils traditionnels (prise de notes, mémorisation passive) montrent leurs limites face au volume de contenu.
+•  L'essor des modèles de langage (LLM) offre une opportunité réelle de personnaliser l'apprentissage.
+•  Les smartphones sont omniprésents : un outil mobile et connecté s'impose naturellement.
+Dispersion
+Trop de contenu à traiter, difficulté à isoler l'essentiel.
+Passivité
+Relire des cours ne garantit pas la mémorisation active.
+Manque d'évaluation
+Peu d'outils permettent un auto-test rapide et ciblé.
+Rupture
+Aucun fil conducteur entre le contenu brut et les révisions.
+
+--- SLIDE 4 ---
+Objectifs du projet
+AI Study Assistant  |  ENSA Berrechid  |  2025/2026
+02
+Objectifs du projet
+Ce que l'application doit permettre à l'étudiant
+Générer du contenu d'étude
+Transformer un texte brut ou une image de cours en résumé, quiz ou flashcards en quelques secondes.
+Évaluation active
+Permettre à l'étudiant de se tester grâce à des quiz générés automatiquement et notés.
+Mémorisation espacée
+Proposer des flashcards recto-verso pour faciliter la révision à long terme.
+Suivi
+ 
+personnalisé
+Conserver l'historique des sessions, identifier les points faibles et marquer du contenu pour révision ultérieure.
+Accessibilité mobile
+Offrir une expérience fluide sur Android, avec saisie textuelle et capture d'image (OCR).
+Sécurité des données
+Authentifier chaque utilisateur (JWT) et isoler ses données dans une base persistante.
+
+--- SLIDE 5 ---
+Architecture générale
+AI Study Assistant  |  ENSA Berrechid  |  2025/2026
+03
+Architecture générale
+Modèle client-serveur à trois niveaux
+Couche Présentation (Android)
+•  Application native Android (Java)
+•  Material Design Components
+•  Navigation par 
+BottomNavigationView
+•  Retrofit 2 + 
+OkHttp
+ pour les 
+appels
+ API
+•  ML Kit – OCR on-device
+•  
+SharedPreferences
+ (session, 
+thème
+, 
+révisions
+ locales)
+Couche Logique (Spring Boot)
+•  API REST (Spring MVC)
+•  
+Authentification
+ stateless JWT
+•  
+Filtre
+ de limitation de 
+débit
+ (rate-limiting)
+•  Service de 
+génération
+ IA (Gemini)
+•  Validation & transformation des 
+réponses
+ IA
+•  Gestion de 
+l'historique
+ des sessions
+Couche Données & IA
+•  PostgreSQL via Spring Data JPA
+•  
+Entités
+ : User, 
+StudySession
+, Question, Flashcard
+•  Google Gemini (
+gemini
+-flash-latest)
+•  
+Génération
+ 
+structurée
+ JSON
+•  Clé API 
+sécurisée
+ par variable 
+d'environnement
+•  Docker Compose pour 
+déploiement
+ local
+►
+◄
+HTTP / REST + JWT
+►
+◄
+JDBC / JPA
+
+--- SLIDE 6 ---
+Technologies utilisées
+AI Study Assistant  |  ENSA Berrechid  |  2025/2026
+04
+Technologies utilisées
+Pile technique complète du projet
+MOBILE
+Android (Java)
+Java 11+, API 26+, Material 3, Fragments, BottomNavigation
+RÉSEAU
+Retrofit 2 / OkHttp
+Client HTTP typé, intercepteur JWT, logging configurable
+OCR
+ML Kit – On Device
+Reconnaissance texte Latin sans appel réseau, intégré GenerateFragment
+BACKEND
+Spring Boot 3
+Spring MVC REST, Spring Security, Spring Data JPA, validation Bean
+IA
+Google Gemini API
+Modèle gemini-flash-latest, prompts JSON stricts, validation serveur
+AUTH
+JJWT (HS256)
+Tokens signés clé Base64 ≥32 octets, expiration configurable, BCrypt
+BASE DONNÉES
+PostgreSQL
+ORM JPA/Hibernate, schéma auto-géré (ddl-auto=update), UUID PK
+DÉPLOIEMENT
+Docker Compose
+Conteneurs PostgreSQL + backend, variables d'environnement dans .env
+SÉRIALISATION
+Gson (Android)
+Désérialisation des réponses API, stockage JSON local ReviewLaterStore
+
+--- SLIDE 7 ---
+Authentification & Sécurité
+AI Study Assistant  |  ENSA Berrechid  |  2025/2026
+05
+Authentification & Sécurité
+Gestion des identités et protection des ressources
+Flux 
+d'authentification
+1
+Inscription
+L'utilisateur soumet nom, e-mail et mot de passe.
+Le backend normalise l'e-mail et hash avec BCrypt.
+2
+Connexion
+Vérification des identifiants ; émission d'un JWT signé (HS256)
+avec l'e-mail comme subject.
+3
+Requêtes
+L'intercepteur Android (AuthInterceptor) ajoute automatiquement
+le header Authorization: Bearer <token>.
+4
+Validation
+JwtAuthenticationFilter valide la signature et charge
+l'utilisateur depuis la base de données.
+5
+Profil
+PATCH /api/auth/profile : modification nom, e-mail ou mot de
+passe avec réémission du token si besoin.
+Mesures
+ de sécurité
+BCrypt
+Hash adaptatif du mot de passe, résistant aux attaques par force brute.
+JWT HS256
+Clé secrète Base64 ≥32 octets, vérifiée au démarrage.
+Routes protégées
+Tout le contenu hormis /api/auth/login et /register requiert un token valide.
+Rate Limiting
+GenerateRateLimitFilter : 10 requêtes / 60 s par utilisateur.
+HTTPS prêt
+Configuration SSL configurable, cleartext désactivable en production.
+Variables env
+Clé Gemini, secret JWT et URL BDD passés par .env, jamais versionnés.
+
+--- SLIDE 8 ---
+Module de génération IA
+AI Study Assistant  |  ENSA Berrechid  |  2025/2026
+06
+Module de génération IA
+Du contenu brut vers du matériel d'étude structuré
+Source
+Texte saisi
+ou image capturée / galerie
+►
+OCR
+ML Kit extrait le texte
+(traitement local, aucun envoi réseau)
+►
+Paramètres
+Type, sujet optionnel,
+profondeur, nb de questions
+►
+API REST
+POST /api/study/generate
+Validation 20-20 000 car.
+►
+Gemini
+Génération JSON structuré
+par Google Gemini Flash
+►
+Résultat
+Session sauvegardée
+Affichage dans ResultActivity
+OCR on-device – ML Kit
+•  Aucune donnée image envoyée au serveur
+•  Google ML Kit Text Recognition (Latin)
+•  Caméra (FileProvider) ou galerie
+•  Le texte extrait remplace automatiquement la zone de saisie
+•  Un aperçu de l'image et un statut d'analyse sont affichés
+Règles de validation
+•  Minimum 20 caractères, maximum 20 000 caractères
+•  Sujet optionnel (aide à la contextualisation du prompt)
+•  Nombre de questions quiz : 3 à 12 (contrôlé par le seekbar)
+•  Profondeur résumé : ESSENTIALS, BALANCED ou THOROUGH
+•  Code HTTP 429 retourné si la limite de débit est atteinte
+
+--- SLIDE 9 ---
+Intégration
+ de 
+l'IA
+ – Google Gemini
+AI Study Assistant  |  ENSA Berrechid  |  2025/2026
+07
+Intégration de l'IA – Google Gemini
+Génération structurée avec validation côté serveur
+Le backend utilise le modèle "gemini-flash-latest" via l'API REST officielle de Google. Les prompts exigent une réponse en JSON strict. Le serveur valide et nettoie la sortie avant persistance.
+Résumé
+{"summary": "..."}
+
+Profondeurs :
+  ESSENTIALS – essentiel
+  BALANCED   – équilibré
+  THOROUGH   – détaillé
+✓  JSON avec clé "summary"
+✓  Texte nettoyé des blocs markdown
+✓  Sauvegardé dans summaryContent
+Quiz
+{"questions": [{
+  "questionText": "...",
+  "choices": [...4...],
+  "correctIndex": 1,
+  "explanation": "..."
+}]}
+✓  Nombre de questions : 3 à 12 (défaut 5)
+✓  4 choix par question, unicité vérifiée
+✓  correctIndex dérivé de correctAnswer
+Flashcards
+{"flashcards": [{
+  "front": "...",
+  "back": "..."
+}]}
+
+Exactement 8 cartes.
+Serveur rejette si ≠ 8.
+✓  Exactement 8 cartes imposées
+✓  Rejet si comptage incorrect
+✓  Stockées avec orderIndex
+
+--- SLIDE 10 ---
+Quiz interactif
+AI Study Assistant  |  ENSA Berrechid  |  2025/2026
+08
+Quiz interactif
+Évaluation active et suivi des performances
+Fonctionnement
+ du quiz
+Navigation
+Questions affichées une par une avec barre de progression.
+Réponses dynamiques
+4 boutons MaterialButton générés dynamiquement pour chaque question.
+Feedback immédiat
+Couleur verte pour la bonne réponse, rouge pour la mauvaise sélectionnée.
+Explication
+Après chaque réponse, une explication textuelle s'affiche si disponible.
+Score final
+Score calculé et affiché en fin de quiz avec dialogue de résultats.
+Suivi des échecs
+Score ≤ 50 % : session ajoutée automatiquement à la liste de révision locale.
+Reprise
+L'étudiant peut régénérer résumé ou flashcards à partir du même texte source.
+Aperçu du flux de 
+réponse
+Question 3 / 7
+Quelle est la complexité temporelle
+d'une recherche binaire ?
+O(n)
+O(log n)
+O(n²)
+O(1)
+Explication : la recherche binaire divise l'espace
+de recherche en deux à chaque étape.
+
+--- SLIDE 11 ---
+Résumés, Flashcards & Historique
+AI Study Assistant  |  ENSA Berrechid  |  2025/2026
+09
+Résumés, Flashcards & Historique
+Exploitation du contenu généré et mémoire de l'application
+Résumé
+•  Texte complet affiché dans SummaryFragment
+•  Bouton Partager (Intent ACTION_SEND)
+•  Bouton 'Réviser plus tard' : enregistre la session dans ReviewLaterStore
+•  Trois niveaux de profondeur : Essentials, Balanced, Thorough
+•  Génération de suivi : enchaîner quiz depuis le même texte source
+Flashcards
+•  Affichage une carte à la fois dans FlashcardsFragment
+•  Animation de retournement (face / dos) via ObjectAnimator
+•  Navigation Précédent / Suivant avec compteur de progression
+•  Exactement 8 cartes générées et persistées
+•  Chaque carte stockée avec orderIndex
+Historique
+•  Liste complète des sessions ordonnées par date décroissante
+•  Pull-to-refresh sur GET /api/history
+•  Tap : chargement complet puis ouverture de ResultActivity
+•  Suppression par balayage latéral avec confirmation
+•  La session conserve sourceText pour permettre la régénération
+
+--- SLIDE 12 ---
+Interface utilisateur
+AI Study Assistant  |  ENSA Berrechid  |  2025/2026
+10
+Interface utilisateur
+Material Design 3, navigation fluide et expérience cohérente
+Structure de navigation
+MainActivity
+Accueil
+Générer
+Historique
+Révision
+Profil
+BottomNavigationView
+ResultActivity
+Résumé / Quiz / Flashcards
+Choix de conception UI
+Material Design 3
+Composants Material (CardView, ChipGroup, TextInputLayout, ProgressIndicator) pour une cohérence visuelle.
+Thème adaptatif
+L'utilisateur
+ 
+choisit
+ System / Clair / 
+Sombre
+ ; la 
+préférence
+ est 
+persistée
+ dans 
+SharedPreferences
+.
+Navigation fluide
+Single Activity avec fragments ; back-stack géré ; transitions sans rechargement de données.
+Chips de sélection
+ChipGroup singleSelection=true pour le type et la profondeur, garantissant une saisie sans erreur.
+Feedback en temps réel
+Compteur de caractères dynamique, messages d'erreur inline, ProgressIndicator indéterminé.
+Accessibilité
+contentDescription sur les éléments visuels ; ratios de contraste conformes Material Design.
+
+--- SLIDE 13 ---
+Base de données & API REST
+AI Study Assistant  |  ENSA Berrechid  |  2025/2026
+11
+Base de données & API REST
+Modèle de données PostgreSQL et contrat d'interface
+Schéma
+ de données (
+simplifié
+)
+User
+id (UUID)
+username
+email
+password (BCrypt)
+createdAt
+StudySession
+id (UUID)
+type (SUMMARY/QUIZ/FLASHCARDS)
+subject (opt.)
+summaryContent (TEXT)
+sourceText (TEXT)
+createdAt
+Question
+id
+questionText
+choices (JSON)
+correctAnswer
+explanation
+orderIndex
+Flashcard
+id
+front (TEXT)
+back (TEXT)
+orderIndex
+User 1 ➡ N 
+StudySession
+   |   
+StudySession
+ 1 ➡ N Question   |   
+StudySession
+ 1 ➡ N Flashcard
+Contrat
+ API REST
+POST
+/api/auth/register
+Création de compte, retourne JWT
+POST
+/api/auth/login
+Authentification, retourne JWT
+GET
+/api/auth/me
+Informations de l'utilisateur courant
+PATCH
+/api/auth/profile
+Mise à jour nom, e-mail, mot de passe
+POST
+/api/study/generate
+Génération IA (résumé / quiz / flashcards)
+GET
+/api/history
+Liste des sessions (ordre décroissant)
+GET
+/api/history/{id}
+Session complète avec contenu
+DELETE
+/api/history/{id}
+Suppression d'une session (204)
+
+--- SLIDE 14 ---
+1
+2
+Démonstration
+Un démo de l’application
+
+--- SLIDE 15 ---
+Conclusion & Perspectives
+AI Study Assistant  |  ENSA Berrechid  |  2025/2026
+1
+3
+Conclusion & Perspectives
+Bilan du projet et axes d'amélioration
+Bilan
+✓  Application mobile native Android complète développée avec Java et Spring Boot.
+✓  Intégration réussie de l'IA générative (Google Gemini) pour produire du contenu structuré.
+✓  Authentification sécurisée JWT avec BCrypt, isolation stricte des données par utilisateur.
+✓  
+Suivi
+ local (quiz 
+échoués
+, 
+révisions
+ 
+ultérieures
+) .
+✓  Architecture claire en trois couches facilitant l'évolution et la maintenance.
+Perspectives
+Support multilingue
+Génération en arabe, anglais et français au choix de l'utilisateur.
+Mode hors-ligne
+Mise en cache locale des sessions récentes pour un accès sans connexion.
+Notifications de révision
+Rappels espacés basés sur la courbe d'oubli d'Ebbinghaus.
+Tableau de bord
+Visualisation des progrès : scores quiz, taux de révision, sujets couverts.
+Support iOS
+Portage vers Flutter ou React Native pour toucher un public plus large.
+Collaboration
+Partage de sessions d'étude entre étudiants d'un même groupe.
+
+--- SLIDE 16 ---
+Merci de votre attention
+AI Study Assistant – Application mobile intelligente d'aide à l'apprentissage
+Mjahdi
+ Abdel
+ou
+ahab
+  &  Zakaria 
+Ennaqui
+Encadrant : Prof. Abdsamad Jarrar
+Filière Génie Informatique  |  Module Développement Mobile  |  S8  |  2025/2026
+ENSA Berrechid  |  Université Hassan 1er
+AI Study Assistant  |  ENSA Berrechid  |  2025 / 2026

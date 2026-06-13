@@ -1,0 +1,5 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.AiStudyAssistant" parent="Base.Theme.AiStudyAssistant">
+        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
+    </style>
+</resources>

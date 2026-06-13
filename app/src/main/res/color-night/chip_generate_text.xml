@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Dark: black text on white chip when selected; light gray on dark chip -->
+    <item android:color="#FF000000" android:state_checked="true" />
+    <item android:color="#FFECECEC" />
+</selector>
