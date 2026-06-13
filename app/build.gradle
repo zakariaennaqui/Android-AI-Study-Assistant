@@ -2,13 +2,29 @@ plugins {
     alias(libs.plugins.android.application)
 }
 
+//android {
+//    namespace 'com.example.ai_study_assistant_android'
+//    compileSdk {
+//        version = release(36) {
+//            minorApiLevel = 1
+//        }
+//    }
+//
+//    defaultConfig {
+//        applicationId "com.example.ai_study_assistant_android"
+//        minSdk 24
+//        targetSdk 36
+//        versionCode 1
+//        versionName "1.0"
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//
+////        buildConfigField "String", "BASE_URL", "\"http://10.0.2.2:8080/\""
+//        buildConfigField "String", "BASE_URL", "\"http://192.168.11.103:8080/\""
+//    }
+
 android {
     namespace 'com.example.ai_study_assistant_android'
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk 36
 
     defaultConfig {
         applicationId "com.example.ai_study_assistant_android"
@@ -18,8 +34,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-//        buildConfigField "String", "BASE_URL", "\"http://10.0.2.2:8080/\""
-        buildConfigField "String", "BASE_URL", "\"http://192.168.11.103:8080/\""
+        buildConfigField "String", "BASE_URL", "\"https://zakariaennaqui-ai-study-assistant-backend.hf.space/\""
     }
 
     buildFeatures {
