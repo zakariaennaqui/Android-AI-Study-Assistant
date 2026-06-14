@@ -88,7 +88,7 @@ jobs:
           tag_name: ${{ steps.version.outputs.tag }}
           name: "AI Study Assistant v${{ steps.version.outputs.version }}"
           body: |
-            ## 📱 AI Study Assistant — Debug Build
+            ## AI Study Assistant — Debug Build
 
             ### Installation
             1. Télécharger l'APK ci-dessous
