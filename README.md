@@ -18,7 +18,7 @@
 
 ---
 
-## 📱 Screenshots
+## Screenshots
 
 <table>
   <tr>
@@ -41,22 +41,22 @@
 
 ---
 
-## ✨ Features
+## Features
 
 | Feature | Description |
 |---|---|
-| 📝 **Summary** | Condense long notes into clear, structured key takeaways (Quick take / Standard / In depth) |
-| ❓ **Quiz** | Auto-generate multiple-choice questions from your material |
-| 🃏 **Flashcards** | Swipeable Q&A cards for rapid review |
-| 📷 **Scan Image** | Take a photo or pick from gallery — ML Kit OCR extracts the text automatically |
-| 🕑 **History** | Browse all your past study sessions |
-| 🔄 **Review** | Failed quizzes and saved summaries are queued for spaced repetition |
-| 🌙 **Dark / Light / System theme** | Appearance setting persisted per user |
-| 👤 **Edit Profile** | Change username, email, or password at any time |
+| **Summary** | Condense long notes into clear, structured key takeaways (Quick take / Standard / In depth) |
+| **Quiz** | Auto-generate multiple-choice questions from your material |
+| **Flashcards** | Swipeable Q&A cards for rapid review |
+| **Scan Image** | Take a photo or pick from gallery — ML Kit OCR extracts the text automatically |
+| **History** | Browse all your past study sessions |
+| **Review** | Failed quizzes and saved summaries are queued for spaced repetition |
+| **Dark / Light / System theme** | Appearance setting persisted per user |
+| **Edit Profile** | Change username, email, or password at any time |
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 ┌─────────────────────────────┐      HTTPS / JWT      ┌──────────────────────────────┐
@@ -91,7 +91,7 @@
 
 ---
 
-## 🚀 Installation Guide (APK Sideload)
+## Installation Guide (APK Sideload)
 
 > The app is distributed as an APK (not yet on the Play Store). Follow these steps to install it on your Android device.
 
@@ -121,18 +121,18 @@ Tap the downloaded APK in your file manager and press **"Install"**.
 
 ---
 
-### Step 4 — Google Play Protect warning ⚠️
+### Step 4 — Google Play Protect warning
 
 You will see a Play Protect warning because the app is not yet on the Play Store.
 
-> ✅ Tap **"Install anyway"** (the text link above the blue button)  
-> ❌ Do **NOT** tap the blue **"OK"** button — that cancels the installation
+> ✓ Tap **"Install anyway"** (the text link above the blue button)  
+> ✕ Do **NOT** tap the blue **"OK"** button — that cancels the installation
 
 <img src="images/4.jpeg" width="300" alt="Play Protect - click Install anyway"/>
 
 ---
 
-### Step 5 — Done! 🎉
+### Step 5 — Done!
 
 <img src="images/5.jpeg" width="300" alt="Application installed"/>
 
@@ -142,7 +142,7 @@ The **StudyFlow** icon will appear on your home screen.
 
 ---
 
-## 🖥️ Backend Deployment
+## Backend Deployment
 
 The backend is deployed for **free** using the following stack:
 
@@ -175,7 +175,7 @@ docker run -p 7860:7860 --env-file .env ai-study-assistant
 
 ---
 
-## 📦 CI/CD — Automatic APK Build
+## CI/CD — Automatic APK Build
 
 Every push to `main` triggers a GitHub Actions workflow that:
 1. Sets up JDK 21 and Android SDK 36
@@ -186,7 +186,7 @@ Workflow file: [`.github/workflows/build-apk.yml`](.github/workflows/build-apk.y
 
 ---
 
-## 🔌 REST API Reference
+## REST API Reference
 
 **Base URL:** `https://zakariaennaqui-ai-study-assistant-backend.hf.space`
 
@@ -199,10 +199,10 @@ Authorization: Bearer <JWT_TOKEN>
 
 | Method | Endpoint | Auth | Description |
 |---|---|---|---|
-| `POST` | `/api/auth/register` | ❌ | Create account → returns JWT |
-| `POST` | `/api/auth/login` | ❌ | Sign in → returns JWT |
-| `GET` | `/api/auth/me` | ✅ | Get current user info |
-| `PATCH` | `/api/auth/profile` | ✅ | Update username / email / password |
+| `POST` | `/api/auth/register` | ✕ | Create account → returns JWT |
+| `POST` | `/api/auth/login` | ✕ | Sign in → returns JWT |
+| `GET` | `/api/auth/me` | ✓ | Get current user info |
+| `PATCH` | `/api/auth/profile` | ✓ | Update username / email / password |
 
 **Register / Login request:**
 ```json
@@ -220,7 +220,7 @@ Authorization: Bearer <JWT_TOKEN>
 
 | Method | Endpoint | Auth | Description |
 |---|---|---|---|
-| `POST` | `/api/study/generate` | ✅ | Generate Summary / Quiz / Flashcards |
+| `POST` | `/api/study/generate` | ✓ | Generate Summary / Quiz / Flashcards |
 
 **Request body:**
 ```json
@@ -241,13 +241,13 @@ Authorization: Bearer <JWT_TOKEN>
 
 | Method | Endpoint | Auth | Description |
 |---|---|---|---|
-| `GET` | `/api/history` | ✅ | List all study sessions |
-| `GET` | `/api/history/{sessionId}` | ✅ | Get a single session |
-| `DELETE` | `/api/history/{sessionId}` | ✅ | Delete a session |
+| `GET` | `/api/history` | ✓ | List all study sessions |
+| `GET` | `/api/history/{sessionId}` | ✓ | Get a single session |
+| `DELETE` | `/api/history/{sessionId}` | ✓ | Delete a session |
 
 ---
 
-## 🛠️ Local Development
+## Local Development
 
 ### Prerequisites
 - JDK 21+
@@ -290,7 +290,7 @@ The API will be available at `http://localhost:7860`.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Android-AI-Study-Assistant/
@@ -317,16 +317,3 @@ Android-AI-Study-Assistant/
 ├── .github/workflows/build-apk.yml    # CI/CD pipeline
 └── README.md
 ```
-
----
-
-## 👨‍💻 Author
-
-**Zakaria Ennaqui**  
-ENSA — Academic project, 2026
-
----
-
-## 📄 License
-
-This project is for educational purposes.
