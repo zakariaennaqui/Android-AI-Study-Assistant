@@ -293,7 +293,7 @@ The API will be available at `http://localhost:7860`.
 
 ---
 
-## 📊 Presentation
+## Presentation
 
 A project presentation slide deck is available in the repository root:
 
