@@ -4,6 +4,7 @@ import ma.ensa.aistudyassistant.auth.dto.AuthResponse;
 import ma.ensa.aistudyassistant.auth.dto.LoginRequest;
 import ma.ensa.aistudyassistant.auth.dto.MeResponse;
 import ma.ensa.aistudyassistant.auth.dto.RegisterRequest;
+import ma.ensa.aistudyassistant.auth.dto.UpdateProfileRequest;
 import ma.ensa.aistudyassistant.model.entities.User;
 import ma.ensa.aistudyassistant.repository.UserRepository;
 import ma.ensa.aistudyassistant.security.JwtService;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
@@ -98,5 +100,52 @@ public class AuthService {
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "User not found"));
 
         return new MeResponse(user.getId(), user.getUsername(), user.getEmail());
+    }
+
+    @Transactional
+    public AuthResponse updateProfile(String currentUserEmail, UpdateProfileRequest request) {
+        String normalizedEmail = currentUserEmail.trim().toLowerCase();
+        User user = userRepository.findByEmail(normalizedEmail)
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "User not found"));
+
+        // --- password change ---
+        boolean hasNewPassword = request.newPassword() != null && !request.newPassword().isBlank();
+        if (hasNewPassword) {
+            if (request.currentPassword() == null || request.currentPassword().isBlank()) {
+                throw new ResponseStatusException(BAD_REQUEST, "Current password is required to set a new password");
+            }
+            if (!passwordEncoder.matches(request.currentPassword(), user.getPassword())) {
+                throw new ResponseStatusException(UNAUTHORIZED, "Current password is incorrect");
+            }
+            user.setPassword(passwordEncoder.encode(request.newPassword()));
+        }
+
+        // --- email change ---
+        if (request.email() != null && !request.email().isBlank()) {
+            String newEmail = request.email().trim().toLowerCase();
+            if (!newEmail.equals(user.getEmail())) {
+                if (userRepository.existsByEmail(newEmail)) {
+                    throw new ResponseStatusException(CONFLICT, "Email already in use");
+                }
+                user.setEmail(newEmail);
+            }
+        }
+
+        // --- username change ---
+        if (request.username() != null && !request.username().isBlank()) {
+            user.setUsername(request.username().trim());
+        }
+
+        User saved = userRepository.save(user);
+
+        // Reissue token (email may have changed)
+        String token = jwtService.generateToken(
+                org.springframework.security.core.userdetails.User
+                        .withUsername(saved.getEmail())
+                        .password(saved.getPassword())
+                        .authorities("ROLE_USER")
+                        .build()
+        );
+        return new AuthResponse(token, saved.getId(), saved.getUsername());
     }
 }
