@@ -14,6 +14,9 @@
   <img src="https://img.shields.io/badge/Android-API%2024%2B-3DDC84?style=for-the-badge&logo=android" alt="Android API"/>
   <img src="https://img.shields.io/badge/Spring%20Boot-4.0-6DB33F?style=for-the-badge&logo=springboot" alt="Spring Boot"/>
   <img src="https://img.shields.io/badge/Gemini%20AI-2.0%20Flash-4285F4?style=for-the-badge&logo=google" alt="Gemini AI"/>
+  <a href="./AI_Study_Assistant_Presentation.pptx">
+  <img src="https://img.shields.io/badge/Presentation-PPTX-B7472A?style=for-the-badge&logo=microsoftpowerpoint" alt="Presentation"/>
+</a>
 </p>
 
 ---
@@ -59,15 +62,15 @@
 ## Architecture
 
 ```
-┌─────────────────────────────┐      HTTPS / JWT      ┌──────────────────────────────┐
+┌─────────────────────────────┐      HTTPS / JWT     ┌──────────────────────────────┐
 │   Android App (StudyFlow)   │ ◄──────────────────► │  Spring Boot REST API        │
-│                             │                        │  (Hugging Face Spaces)       │
-│  • Java + MVVM              │                        │                              │
-│  • Retrofit 2               │                        │  • Spring Boot 4 + Java 17   │
-│  • ML Kit (OCR)             │                        │  • Spring Security + JWT     │
-│  • Navigation Component     │                        │  • Google Gemini 2.0 Flash   │
-│  • ViewBinding              │                        │  • Neon PostgreSQL (cloud)   │
-└─────────────────────────────┘                        └──────────────────────────────┘
+│                             │                      │  (Hugging Face Spaces)       │
+│  • Java + MVVM              │                      │                              │
+│  • Retrofit 2               │                      │  • Spring Boot 4 + Java 17   │
+│  • ML Kit (OCR)             │                      │  • Spring Security + JWT     │
+│  • Navigation Component     │                      │  • Google Gemini 2.0 Flash   │
+│  • ViewBinding              │                      │  • Neon PostgreSQL (cloud)   │
+└─────────────────────────────┘                      └──────────────────────────────┘
 ```
 
 ### Tech Stack
@@ -289,6 +292,12 @@ The API will be available at `http://localhost:7860`.
 3. Run on emulator or device (Min SDK 24 / Android 7.0)
 
 ---
+
+## 📊 Presentation
+
+A project presentation slide deck is available in the repository root:
+
+[`AI_Study_Assistant_Presentation.pptx`](./AI_Study_Assistant_Presentation.pptx)
 
 ## Project Structure
 
