@@ -34,8 +34,8 @@ public class GeminiClient {
     public GeminiClient(
             RestClient restClient,
             ObjectMapper objectMapper,
-            @Value("${GEMINI_API_KEY:AIzaSyCpQmZ4itt6VX2t5zbTHKa9uT-fw05dujU}") String apiKey,
-            @Value("${gemini.model:gemini-flash-latest}") String model,
+            @Value("${GEMINI_API_KEY}") String apiKey,
+            @Value("${gemini.model:gemini-2.0-flash}") String model,
             @Value("${gemini.retry.max-attempts:3}") int maxAttempts,
             @Value("${gemini.retry.base-backoff-ms:400}") long baseBackoffMs
     ) {
