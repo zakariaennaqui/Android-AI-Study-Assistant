@@ -12,6 +12,7 @@
     <img src="https://img.shields.io/github/v/release/zakariaennaqui/Android-AI-Study-Assistant?label=Download%20APK&color=4CAF50&style=for-the-badge" alt="Download APK"/>
   </a>
   <img src="https://img.shields.io/badge/Android-API%2024%2B-3DDC84?style=for-the-badge&logo=android" alt="Android API"/>
+  <img src="https://img.shields.io/badge/Android%20Studio-IDE-3DDC84?style=for-the-badge&logo=androidstudio&logoColor=white" alt="Android Studio"/>
   <img src="https://img.shields.io/badge/Spring%20Boot-4.0-6DB33F?style=for-the-badge&logo=springboot" alt="Spring Boot"/>
   <img src="https://img.shields.io/badge/Gemini%20AI-2.0%20Flash-4285F4?style=for-the-badge&logo=google" alt="Gemini AI"/>
   <a href="./AI_Study_Assistant_Presentation.pptx">
